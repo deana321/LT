@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中文時間日期</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+        }
+        .container {
+            text-align: center;
+            color: #fff;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .date { font-size: 1.5rem; margin-bottom: 15px; color: #a8d8ea; letter-spacing: 3px; }
+        .time { font-size: 4rem; font-weight: bold; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+        .weekday { font-size: 1.2rem; margin-top: 15px; color: #ffd700; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="date" id="date"></div>
+        <div class="time" id="time"></div>
+        <div class="weekday" id="weekday"></div>
+    </div>
+    <script>
+        const weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+        function updateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const weekDay = weekDays[now.getDay()];
+            document.getElementById('date').textContent = `中華民國 ${year - 1911} 年 ${month} 月 ${day} 日`;
+            document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('weekday').textContent = weekDay;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>

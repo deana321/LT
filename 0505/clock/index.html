@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>復古時鐘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #d4a574 0%, #c4956a 50%, #b8895f 100%);
+            font-family: "Microsoft JhengHei", "PingFang TC", serif;
+        }
+
+        .container {
+            background: linear-gradient(145deg, #8b6914, #6d4c1e);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.4),
+                inset 0 2px 5px rgba(255,255,255,0.1),
+                inset 0 -2px 5px rgba(0,0,0,0.3);
+            border: 4px solid #5a3d1f;
+        }
+
+        .clock-wrapper {
+            background: linear-gradient(180deg, #f5e6d3, #e8d5c0);
+            border-radius: 50%;
+            width: 280px;
+            height: 280px;
+            position: relative;
+            margin: 0 auto 25px;
+            box-shadow: 
+                inset 0 0 30px rgba(0,0,0,0.2),
+                0 5px 15px rgba(0,0,0,0.3);
+            border: 8px solid #5a3d1f;
+        }
+
+        .clock-face {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            background: #5a3d1f;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 5px;
+        }
+
+        .hour-hand {
+            width: 6px;
+            height: 70px;
+            background: #5a3d1f;
+            margin-left: -3px;
+        }
+
+        .minute-hand {
+            width: 4px;
+            height: 95px;
+            background: #6d4c1e;
+            margin-left: -2px;
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 105px;
+            background: #c41e3a;
+            margin-left: -1px;
+        }
+
+        .hour-marker {
+            position: absolute;
+            width: 4px;
+            height: 15px;
+            background: #5a3d1f;
+            left: 50%;
+            top: 10px;
+            transform-origin: 50% 130px;
+        }
+
+        .minute-marker {
+            position: absolute;
+            width: 2px;
+            height: 6px;
+            background: #8b7355;
+            left: 50%;
+            top: 10px;
+            transform-origin: 50% 130px;
+        }
+
+        .brand {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #5a3d1f;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .digital-display {
+            background: #1a1a1a;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 
+                inset 0 3px 8px rgba(0,0,0,0.5),
+                0 2px 5px rgba(0,0,0,0.3);
+            border: 3px solid #5a3d1f;
+        }
+
+        .digital-time {
+            font-family: "Courier New", monospace;
+            font-size: 42px;
+            color: #ff6b35;
+            text-shadow: 0 0 10px rgba(255,107,53,0.5);
+            letter-spacing: 4px;
+        }
+
+        .digital-date {
+            font-size: 18px;
+            color: #e8d5c0;
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+
+        .digital-day {
+            font-size: 14px;
+            color: #a0a0a0;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="clock-wrapper">
+            <div class="clock-face" id="clockFace">
+                <div class="brand">VINTAGE</div>
+                <div class="center-dot"></div>
+                <div class="hand hour-hand" id="hourHand"></div>
+                <div class="hand minute-hand" id="minuteHand"></div>
+                <div class="hand second-hand" id="secondHand"></div>
+            </div>
+        </div>
+        <div class="digital-display">
+            <div class="digital-time" id="digitalTime">00:00:00</div>
+            <div class="digital-date" id="digitalDate">2026年1月1日</div>
+            <div class="digital-day" id="digitalDay">星期三 上午</div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const day = now.getDay();
+            const month = now.getMonth() + 1;
+            const date = now.getDate();
+            const year = now.getFullYear();
+
+            const hourDeg = (hours % 12) * 30 + minutes * 0.5;
+            const minuteDeg = minutes * 6 + seconds * 0.1;
+            const secondDeg = seconds * 6;
+
+            document.getElementById('hourHand').style.transform = `rotate(${hourDeg}deg)`;
+            document.getElementById('minuteHand').style.transform = `rotate(${minuteDeg}deg)`;
+            document.getElementById('secondHand').style.transform = `rotate(${secondDeg}deg)`;
+
+            const ampm = hours < 12 ? '上午' : '下午';
+            const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+            
+            const timeStr = `${String(displayHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            const dateStr = `${year}年${month}月${date}日`;
+            const dayNames = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+
+            document.getElementById('digitalTime').textContent = timeStr;
+            document.getElementById('digitalDate').textContent = dateStr;
+            document.getElementById('digitalDay').textContent = `${dayNames[day]} ${ampm}`;
+        }
+
+        function createMarkers() {
+            const clockFace = document.getElementById('clockFace');
+            
+            for (let i = 0; i < 12; i++) {
+                const marker = document.createElement('div');
+                marker.className = 'hour-marker';
+                marker.style.transform = `rotate(${i * 30}deg)`;
+                clockFace.appendChild(marker);
+            }
+
+            for (let i = 0; i < 60; i++) {
+                if (i % 5 !== 0) {
+                    const marker = document.createElement('div');
+                    marker.className = 'minute-marker';
+                    marker.style.transform = `rotate(${i * 6}deg)`;
+                    clockFace.appendChild(marker);
+                }
+            }
+        }
+
+        createMarkers();
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
